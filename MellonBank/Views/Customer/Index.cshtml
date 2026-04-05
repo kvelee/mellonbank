@@ -7,11 +7,23 @@
 
 <div class="container mt-4">
     <div class="row mb-4">
-        <div class="col">
+        <div class="d-flex justigy-content-space-between">
+            <div class="col">
             <h2 class="fw-bold text-dark">Καλώς ορίσατε, @ViewBag.CustomerName</h2>
             <p class="text-muted">Δείτε την κατάσταση των λογαριασμών σας στην MellonBank.</p>
+            </div>
+
+           <a asp-action="Transfer" 
+               class="btn btn-success rounded-pill d-flex justify-content-center align-items-center shadow-sm" style="margin: 16px 8px; height: 50px">
+               <span>Μεταφορά Χρημάτων</span>
+           </a>
+        
         </div>
+        
+        
     </div>
+
+    
 
     @if (!Model.Any())
     {
@@ -63,9 +75,10 @@
                                 <i class="bi bi-wallet2 fs-1 text-light opacity-50"></i>
                             </div>
                         </div>
-                        <div class="card-footer bg-white border-0 p-3">
-                            <button class="btn btn-outline-primary btn-sm w-100 rounded-pill">Προβολή Κινήσεων</button>
+                        <div class="card-footer bg-white border-0 p-3 new-card-footer">
+                            <button class="btn btn-outline-primary btn-sm w-100 rounded-pill" style="margin-right: 5px">Προβολή Κινήσεων</button>
                         </div>
+                            
                     </div>
                 </div>
             }

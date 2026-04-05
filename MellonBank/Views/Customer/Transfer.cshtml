@@ -1,0 +1,47 @@
+@model TransferViewModel
+@{
+    ViewData["Title"] = "Μεταφορά Χρημάτων";
+}
+
+<div class="container mt-5">
+    <div class="col-md-6 mx-auto">
+        <div class="card shadow border-0">
+            <div class="card-header bg-primary text-white py-3">
+                <h5 class="mb-0">Νέα Μεταφορά</h5>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="Transfer" method="post">
+                    <div asp-validation-summary="All" class="text-danger small"></div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Από Λογαριασμό</label>
+                        <select asp-for="FromIban" class="form-select">
+                            @foreach (var acc in Model.MyAccounts)
+                            {
+                                <option value="@acc.IBAN">@acc.IBAN (@acc.Balance.ToString("C2"))</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Προς IBAN (Παραλήπτης)</label>
+                        <input asp-for="ToIban" class="form-control" placeholder="GR..." required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Ποσό Μεταφοράς (€)</label>
+                        <input asp-for="Amount" type="number" step="0.01" class="form-control form-control-lg" required />
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label text-muted">Αιτιολογία (Προαιρετικά)</label>
+                        <input asp-for="Description" class="form-control" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 btn-lg rounded-pill">Επιβεβαίωση Μεταφοράς</button>
+                    <a asp-action="Index" class="btn btn-link w-100 mt-2 text-decoration-none">Ακύρωση</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

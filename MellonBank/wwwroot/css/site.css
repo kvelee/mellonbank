@@ -91,3 +91,13 @@ body {
     background: linear-gradient(135.0deg, #f5f7fa 0%, #c3cfe2 100%);
     min-height: 100vh;
 }
+
+.transfer-button {
+  border: 1px solid black;
+  border-radius: 200px;
+  height: 15%;
+  width: 10%;
+
+  display: flex;
+  justify-content: center;
+}
