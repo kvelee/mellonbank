@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MellonBank.Models;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 public class HomeController : Controller
 {
@@ -14,7 +15,11 @@ public class HomeController : Controller
     // Η Index θα σερβίρει τη φόρμα
     public IActionResult Index()
     {
-        if (User.Identity.IsAuthenticated)
+        if (User.Identity == null)
+        {
+            return View("Error");
+        }
+        else if (User.Identity.IsAuthenticated)
         {
             if (User.IsInRole("Staff")) return RedirectToAction("Index", "Staff");
             return RedirectToAction("Index", "Customer");
@@ -29,7 +34,7 @@ public class HomeController : Controller
         {
             var user = await _signInManager.UserManager.FindByEmailAsync(model.Email);
 
-            var userName = user != null ? user.UserName : model.Email;
+            string userName = (user != null) ? user.UserName : model.Email;
 
             var result = await _signInManager.PasswordSignInAsync(userName, model.Password, model.RememberMe, false);
 

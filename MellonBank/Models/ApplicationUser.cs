@@ -13,11 +13,11 @@ public class ApplicationUser : IdentityUser
     // - PasswordHash
 
 
-    public string Name {get;set;}        
-    public string LastName {get;set;}
+    public string? Name {get;set;}        
+    public string? LastName {get;set;}
     public string? Address {get;set;}
     [Key]
-    public string AFM {get;set;}
+    public string? AFM {get;set;}
 
     public ICollection<BankAccount> BankAccounts {get;set;} = new List<BankAccount>();
 

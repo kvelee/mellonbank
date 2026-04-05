@@ -51,6 +51,7 @@ public class CustomerController : Controller
     public async Task<IActionResult> Transfer(TransferViewModel model)
     {
         var user = await _userManager.GetUserAsync(User);
+        if (user == null) return Challenge();
         
         var sourceAccount = await _context.BankAccounts
             .FirstOrDefaultAsync(a => a.IBAN == model.FromIban && a.AFM == user.AFM);
@@ -68,7 +69,7 @@ public class CustomerController : Controller
         }
         else if (model.Amount <= 0)
         {
-            ModelState.AddModelError("", "Cannot transfer this ammount (zero or negative ammount error)");
+            ModelState.AddModelError("", "Cannot transfer this ammount (zero or negative ammount)");
         }
         else if (sourceAccount == destinationAccount)
         {

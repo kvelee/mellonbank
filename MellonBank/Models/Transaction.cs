@@ -6,10 +6,10 @@ public class Transaction
     public int Id { get; set; }
 
     [Required]
-    public string SourceIban { get; set; }
+    public required string SourceIban { get; set; }
 
     [Required]
-    public string DestinationIban { get; set; }
+    public required string DestinationIban { get; set; }
 
     [Required]
     public decimal Amount { get; set; }
