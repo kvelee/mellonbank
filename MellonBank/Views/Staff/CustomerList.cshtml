@@ -1,0 +1,47 @@
+@model IEnumerable<ApplicationUser>
+@{
+    ViewData["Title"] = "Λίστα Πελατών";
+}
+
+<div class="d-flex justify-content-between align-items-center mt-4 mb-3">
+    <h2>Εγγεγραμμένοι Πελάτες</h2>
+    <a asp-action="AddCustomer" class="btn btn-primary">+ Νέος Πελάτης</a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>Ονοματεπώνυμο</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>ΑΦΜ</th>
+                    <th>Ενέργειες</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.Name @user.LastName</td>
+                        <td>@user.UserName</td>
+                        <td>@user.Email</td>
+                        <td>@user.AFM</td>
+                        <td>
+                            <a asp-action="AddAccount" asp-route-userId="@user.Id" class="btn btn-sm btn-outline-success">
+                                <i class="bi bi-plus-circle"></i> +IBAN
+                            </a>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">Δεν βρέθηκαν πελάτες στο σύστημα.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
