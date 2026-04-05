@@ -16,6 +16,13 @@ namespace MellonBank.Data
             builder.Entity<BankAccount>().Property(b=>b.Balance).HasPrecision(18,2);
 
             builder.Entity<BankAccount>().HasKey(b=>b.IBAN);
+
+            builder.Entity<BankAccount>()
+                .HasOne(a => a.User)
+                .WithMany() 
+                .HasPrincipalKey(u => u.AFM)
+                .HasForeignKey(a => a.AFM); 
         }
+
     }
 }

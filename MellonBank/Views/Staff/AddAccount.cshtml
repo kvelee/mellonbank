@@ -1,45 +1,61 @@
 @model AddAccountViewModel
-@{
-    ViewData["Title"] = "Άνοιγμα Λογαριασμού";
-}
 
-<div class="card shadow border-0 mt-4">
-    <div class="card-header bg-success text-white">
-        <h4 class="mb-0">Νέος Λογαριασμός για: @Model.CustomerName</h4>
-    </div>
-    <div class="card-body p-4">
-        <form asp-action="AddAccount" method="post">
-            <input type="hidden" asp-for="UserId" />
-            
-            <div class="mb-3">
-                <label class="form-label fw-bold">IBAN (Αυτόματη Παραγωγή)</label>
-                <input asp-for="IBAN" class="form-control bg-light" readonly />
-            </div>
+<div class="container mt-5">
+    <div class="card border-0 shadow-lg">
+        <div class="card-header bg-dark text-white p-3">
+            <h4 class="mb-0"><i class="bi bi-shield-check"></i> MellonBank - Έκδοση Νέου IBAN</h4>
+        </div>
+        <div class="card-body p-4 bg-light">
+            <form asp-action="AddAccount" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                
+                <input type="hidden" asp-for="AFM" />
 
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Υποκατάστημα</label>
-                    <input asp-for="BranchName" class="form-control" placeholder="π.χ. Κεντρικό Αθηνών" required />
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label text-muted small uppercase">Ονοματεπώνυμο Πελάτη</label>
+                        <input class="form-control form-control-lg bg-white" value="@Model.CustomerName" readonly />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted small">ΑΦΜ (Αναγνωριστικό)</label>
+                        <input class="form-control form-control-lg bg-white fw-bold text-secondary" value="@Model.AFM" readonly />
+                    </div>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Τύπος Λογαριασμού</label>
-                    <select asp-for="AccountType" class="form-select">
-                        <option value="Savings">Ταμιευτηρίου</option>
-                        <option value="Current">Τρεχούμενος</option>
-                        <option value="Business">Επαγγελματικός</option>
-                    </select>
+
+                <div class="p-3 border rounded bg-white mb-4">
+                    <h6 class="text-primary mb-3">Στοιχεία Λογαριασμού</h6>
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold">IBAN Συστήματος</label>
+                            <input asp-for="IBAN" class="form-control font-monospace text-primary" style="letter-spacing: 2px;" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Υποκατάστημα</label>
+                            <input asp-for="BranchName" class="form-control" required placeholder="π.χ. 0172 - Αθήνα" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Προϊόν</label>
+                            <select asp-for="AccountType" class="form-select">
+                                <option value="Savings">Mellon Savings (Ταμιευτήριο)</option>
+                                <option value="Current">Mellon Current (Τρεχούμενος)</option>
+                                <option value="Business">Mellon Business (Επαγγελματικός)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label">Αρχική Πίστωση (€)</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-success text-white">€</span>
+                                <input asp-for="InitialBalance" type="number" step="0.01" class="form-control form-control-lg text-end" value="0.00" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="mb-3">
-                <label class="form-label">Αρχική Κατάθεση (€)</label>
-                <input asp-for="InitialBalance" type="number" step="0.01" class="form-control" value="0.00" />
-            </div>
-
-            <div class="mt-4">
-                <button type="submit" class="btn btn-success px-5">Επιβεβαίωση Ανοίγματος</button>
-                <a asp-action="CustomerList" class="btn btn-secondary">Επιστροφή στη Λίστα</a>
-            </div>
-        </form>
+                <div class="d-flex justify-content-between">
+                    <a asp-action="CustomerList" class="btn btn-outline-secondary px-4">Επιστροφή</a>
+                    <button type="submit" class="btn btn-primary btn-lg px-5">Ολοκλήρωση & Έκδοση</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>

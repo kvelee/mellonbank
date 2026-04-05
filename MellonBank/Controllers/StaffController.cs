@@ -76,7 +76,7 @@ public class StaffController : Controller
 
         var model = new AddAccountViewModel
         {
-            UserId = userId,
+            AFM = user.AFM,
             CustomerName = $"{user.Name} {user.LastName}",
             IBAN = "GR" + new Random().Next(10, 99) + "0172" + new Random().Next(1000, 9999) + "0000" + new Random().Next(1000, 9999)
         };
@@ -86,6 +86,8 @@ public class StaffController : Controller
     [HttpPost]
     public async Task<IActionResult> AddAccount(AddAccountViewModel model)
     {
+        ModelState.Remove("CustomerName");
+
         if (ModelState.IsValid)
         {
             var account = new BankAccount
@@ -94,7 +96,7 @@ public class StaffController : Controller
                 Balance = model.InitialBalance,
                 BranchName = model.BranchName,
                 AccountType = model.AccountType,
-                UserId = model.UserId
+                AFM = model.AFM
             };
 
             _context.BankAccounts.Add(account); // Τώρα αυτό θα δουλέψει!

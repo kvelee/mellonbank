@@ -1,0 +1,81 @@
+@using Microsoft.CodeAnalysis.CSharp.Syntax
+@using System.Globalization
+@model IEnumerable<BankAccount>
+@{
+    ViewData["Title"] = "Ο Λογαριασμός μου";
+}
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col">
+            <h2 class="fw-bold text-dark">Καλώς ορίσατε, @ViewBag.CustomerName</h2>
+            <p class="text-muted">Δείτε την κατάσταση των λογαριασμών σας στην MellonBank.</p>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info border-0 shadow-sm">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            Δεν βρέθηκαν ενεργοί τραπεζικοί λογαριασμοί. Παρακαλούμε επικοινωνήστε με ένα κατάστημα.
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var account in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                        @if (@account.AccountType=="Savings") {
+                            <div class="card-header bg-primary text-white py-3 border-0">
+                            <small class="text-uppercase opacity-75" style="letter-spacing: 1px;">@account.AccountType</small>
+                            <h5 class="mb-0 fw-bold">@account.BranchName</h5>
+                            </div>
+                        }
+                        else { 
+                            @if (@account.AccountType=="Current") {
+                            <div class="card-header bg-primary text-white py-3 border-0" style="background-color: rgb(255, 181, 45) !important;">
+                            <small class="text-uppercase opacity-75" style="letter-spacing: 1px;">@account.AccountType</small>
+                            <h5 class="mb-0 fw-bold">@account.BranchName</h5>
+                            </div>
+                            }
+                        else @if (@account.AccountType=="Business") {
+                            <div class="card-header bg-primary text-white py-3 border-0" style="background-color: lightgrey !important;">
+                            <small class="text-uppercase opacity-75" style="letter-spacing: 1px;">@account.AccountType</small>
+                            <h5 class="mb-0 fw-bold">@account.BranchName</h5>
+                        </div>
+                        }
+                        }
+                        
+                        
+                        <div class="card-body p-4">
+                            <p class="text-muted small mb-1">IBAN</p>
+                            <p class="font-monospace fw-bold text-primary mb-4" style="font-size: 1.1rem;">@account.IBAN</p>
+                            
+                            <hr class="my-3 opacity-10">
+                            
+                            <div class="d-flex justify-content-between align-items-end">
+                                <div>
+                                    <p class="text-muted small mb-0">Διαθέσιμο Υπόλοιπο</p>
+                                    <h3 class="mb-0 fw-bold">@account.Balance.ToString("C2", new CultureInfo("gr-GR"))</h3>
+                                </div>
+                                <i class="bi bi-wallet2 fs-1 text-light opacity-50"></i>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white border-0 p-3">
+                            <button class="btn btn-outline-primary btn-sm w-100 rounded-pill">Προβολή Κινήσεων</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<style>
+    .card { transition: transform 0.2s; }
+    .card:hover { transform: translateY(-5px); }
+    .bg-primary { background-color: #004a99 !important; }
+    .text-primary { color: #004a99 !important; }
+</style>

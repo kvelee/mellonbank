@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MellonBank.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260404165453_initial")]
-    partial class initial
+    [Migration("20260405101354_FixedDB")]
+    partial class FixedDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,7 +32,7 @@ namespace MellonBank.Migrations
 
                     b.Property<string>("AFM")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -110,6 +110,10 @@ namespace MellonBank.Migrations
                     b.Property<string>("IBAN")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("AFM")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("AccountType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -126,6 +130,8 @@ namespace MellonBank.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IBAN");
+
+                    b.HasIndex("AFM");
 
                     b.HasIndex("ApplicationUserId");
 
@@ -267,9 +273,18 @@ namespace MellonBank.Migrations
 
             modelBuilder.Entity("BankAccount", b =>
                 {
+                    b.HasOne("ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("AFM")
+                        .HasPrincipalKey("AFM")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ApplicationUser", null)
                         .WithMany("BankAccounts")
                         .HasForeignKey("ApplicationUserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MellonBank.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class FixedDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,7 +33,7 @@ namespace MellonBank.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AFM = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AFM = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -52,6 +52,7 @@ namespace MellonBank.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.UniqueConstraint("AK_AspNetUsers_AFM", x => x.AFM);
                 });
 
             migrationBuilder.CreateTable(
@@ -168,11 +169,18 @@ namespace MellonBank.Migrations
                     Balance = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     BranchName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AccountType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AFM = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BankAccounts", x => x.IBAN);
+                    table.ForeignKey(
+                        name: "FK_BankAccounts_AspNetUsers_AFM",
+                        column: x => x.AFM,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "AFM",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_BankAccounts_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
@@ -218,6 +226,11 @@ namespace MellonBank.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BankAccounts_AFM",
+                table: "BankAccounts",
+                column: "AFM");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BankAccounts_ApplicationUserId",

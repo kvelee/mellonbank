@@ -10,8 +10,8 @@ public class BankAccount {
     public string BranchName {get;set;}
     public string AccountType {get;set;}
 
-    public string UserId { get; set; }
+    public string AFM { get; set; }
 
-    [ForeignKey("UserId")]
+    [ForeignKey("AFM")]
     public virtual ApplicationUser User { get; set; }
 }
