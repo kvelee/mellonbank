@@ -3,44 +3,47 @@
     ViewData["Title"] = "Λίστα Πελατών";
 }
 
-<div class="d-flex justify-content-between align-items-center mt-4 mb-3">
+<div class="d-flex justify-content-between align-items-center mt-4 mb-3" style="max-width: 1200px">
     <h2>Εγγεγραμμένοι Πελάτες</h2>
-    <a asp-action="AddCustomer" class="btn btn-primary">+ Νέος Πελάτης</a>
+    <a asp-action="AddCustomer" class="btn btn-primary">Προσθήκη Πελάτη</a>
 </div>
 
-
-
-<div class="card shadow-sm border-0">
+<div class="card shadow-sm border-0" style="max-width: 1200px;">
     <div class="card-body">
         <form asp-action="CustomerList" method="get" class="mb-4">
-    <div class="input-group">
-        <input type="text" name="searchAfm" class="form-control" placeholder="Αναζήτηση με ΑΦΜ...">
-        <button type="submit" class="btn btn-primary">Αναζήτηση</button>
-    </div>
-</form>
+            <div class="input-group">
+                <input type="text" name="searchAfm" class="form-control" placeholder="Αναζήτηση με ΑΦΜ...">
+            </div>
+        </form>
 
-<table class="table">
-    <tbody>
-        @foreach (var customer in Model) {
-            <tr>
-                <td>@customer.AFM</td>
-                <td>@customer.Name @customer.LastName</td>
-                <td>
-                    <a asp-action="EditCustomer" asp-route-afm="@customer.AFM" class="btn btn-sm btn-warning">Επεξεργασία</a>
-                    <form asp-action="DeleteCustomer" asp-route-afm="@customer.AFM" method="post" style="display:inline">
-                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="confirmDelete('@customer.AFM')">
-                            <i class="bi bi-trash"></i> Διαγραφή
-                        </button>
-                    </form>
-                    <a asp-action="AddAccount" asp-route-userId="@customer.Id" class="btn btn-sm btn-success">+ Λογαριασμός</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ΑΦΜ</th>
+                    <th>Όνομα</th>
+                    <th class="text-center">Ενέργειες</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var customer in Model) {
+                    <tr>
+                        <td>@customer.AFM</td>
+                        <td>@customer.Name @customer.LastName</td>
+                        <td class="text-center d-flex justify-content-evenly">
+                            <a asp-action="EditCustomer" asp-route-afm="@customer.AFM" class="btn btn-sm btn-warning">Επεξεργασία</a>
+                            <form asp-action="DeleteCustomer" asp-route-afm="@customer.AFM" method="post" style="display:inline">
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="confirmDelete('@customer.AFM')">
+                                    <i class="bi bi-trash"></i> Διαγραφή
+                                </button>
+                            </form>
+                            <a asp-action="AddAccount" asp-route-userId="@customer.Id" class="btn btn-sm btn-success">Προσθήκη Λογαριασμού</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
-
 
 <div class="modal fade" id="deleteModal" tabindex="-1">
     <div class="modal-dialog">
