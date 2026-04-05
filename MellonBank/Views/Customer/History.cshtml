@@ -1,0 +1,38 @@
+@model IEnumerable<Transaction>
+
+<div class="container mt-4">
+    <div class="card shadow border-0">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Ιστορικό Κινήσεων: @ViewBag.Iban</h5>
+            <a asp-action="Index" class="btn btn-sm btn-outline-light">Επιστροφή</a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Ημερομηνία</th>
+                            <th>Περιγραφή</th>
+                            <th>Προορισμός/Πηγή</th>
+                            <th class="text-end">Ποσό</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var t in Model)
+                        {
+                            var isOut = t.SourceIban == ViewBag.Iban;
+                            <tr>
+                                <td>@t.TransactionDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>@t.Description</td>
+                                <td>@(isOut ? "Προς: " + t.DestinationIban : "Από: " + t.SourceIban)</td>
+                                <td class="text-end fw-bold @(isOut ? "text-danger" : "text-success")">
+                                    @(isOut ? "-" : "+") @t.Amount.ToString("C2")
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

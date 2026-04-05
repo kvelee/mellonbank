@@ -49,11 +49,9 @@ public class CustomerController : Controller
     {
         var user = await _userManager.GetUserAsync(User);
         
-        // 1. Έλεγχος αν ο λογαριασμός χρέωσης ανήκει όντως στον χρήστη
         var sourceAccount = await _context.BankAccounts
             .FirstOrDefaultAsync(a => a.IBAN == model.FromIban && a.AFM == user.AFM);
         
-        // 2. Έλεγχος αν υπάρχει ο λογαριασμός προορισμού
         var destinationAccount = await _context.BankAccounts
             .FirstOrDefaultAsync(a => a.IBAN == model.ToIban);
     
@@ -71,15 +69,23 @@ public class CustomerController : Controller
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-                // Αφαίρεση από την πηγή
                 sourceAccount.Balance -= model.Amount;
-                
-                // Προσθήκη στον προορισμό
                 destinationAccount.Balance += model.Amount;
-    
+
+                var log = new Transaction
+                {
+                    SourceIban = model.FromIban,
+                    DestinationIban = model.ToIban,
+                    Amount = model.Amount,
+                    TransactionType = "Transfer",
+                    Description = model.Description,
+                    TransactionDate = DateTime.Now
+                };
+
+                _context.Transactions.Add(log);
+
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
-    
                 return RedirectToAction("Index");
             }
             catch (Exception)
@@ -91,5 +97,21 @@ public class CustomerController : Controller
     
         model.MyAccounts = await _context.BankAccounts.Where(a => a.AFM == user.AFM).ToListAsync();
         return View(model);
+    }
+
+    public async Task<IActionResult> History(string iban)
+    {
+        var user = await _userManager.GetUserAsync(User);
+        // Επιβεβαίωση ότι ο λογαριασμός ανήκει στον χρήστη
+        var account = await _context.BankAccounts.AnyAsync(a => a.IBAN == iban && a.AFM == user.AFM);
+        if (!account) return Unauthorized();
+    
+        var transactions = await _context.Transactions
+            .Where(t => t.SourceIban == iban || t.DestinationIban == iban)
+            .OrderByDescending(t => t.TransactionDate)
+            .ToListAsync();
+    
+        ViewBag.Iban = iban;
+        return View(transactions);
     }
 }

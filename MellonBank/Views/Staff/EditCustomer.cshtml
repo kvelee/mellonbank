@@ -1,0 +1,39 @@
+@model ApplicationUser
+@{ ViewData["Title"] = "Επεξεργασία Πελάτη"; }
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-warning text-dark fw-bold">
+            Επεξεργασία Στοιχείων: @Model.AFM
+        </div>
+        <div class="card-body">
+            <form asp-action="EditCustomer" method="post">
+                <input type="hidden" asp-for="AFM" /> <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Όνομα</label>
+                        <input asp-for="Name" class="form-control" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Επώνυμο</label>
+                        <input asp-for="LastName" class="form-control" required />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Διεύθυνση</label>
+                    <input asp-for="Address" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Τηλέφωνο</label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                </div>
+
+                <div class="d-flex justify-content-between border-top pt-3">
+                    <a asp-action="CustomerList" class="btn btn-light">Πίσω</a>
+                    <button type="submit" class="btn btn-warning px-4">Αποθήκευση Αλλαγών</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

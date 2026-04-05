@@ -76,7 +76,9 @@
                             </div>
                         </div>
                         <div class="card-footer bg-white border-0 p-3 new-card-footer">
-                            <button class="btn btn-outline-primary btn-sm w-100 rounded-pill" style="margin-right: 5px">Προβολή Κινήσεων</button>
+                            <a asp-action="History" asp-route-iban="@account.IBAN"
+                                class="btn btn-outline-primary btn-sm w-100 rounded-pill">
+                                Προβολή Κινήσεων</a>
                         </div>
                             
                     </div>

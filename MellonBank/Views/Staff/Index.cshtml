@@ -11,38 +11,28 @@
         </div>
     </div>
 
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-primary">
-                <div class="card-body text-center">
-                    <i class="bi bi-person-plus fs-1 text-primary"></i>
-                    <h5 class="card-title mt-3">Νέος Πελάτης</h5>
-                    <p class="card-text small text-muted">Εγγραφή νέου χρήστη στο σύστημα με απόδοση ρόλου Customer.</p>
-                    <a asp-action="AddCustomer" class="btn btn-outline-primary w-100">Έναρξη Εγγραφής</a>
+        <div class="row g-4" style="display: flex; justify-content: space-evenly">
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-primary">
+                    <div class="card-body text-center">
+                        <i class="bi bi-person-plus fs-1 text-primary"></i>
+                        <h5 class="card-title mt-3">Νέος Πελάτης</h5>
+                        <p class="card-text small text-muted">Εγγραφή νέου χρήστη στο σύστημα με απόδοση ρόλου Customer.</p>
+                        <a asp-action="AddCustomer" class="btn btn-outline-primary w-100">Έναρξη Εγγραφής</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm" style="border: 1px solid black;">
+                    <div class="card-body text-center">
+                        <i class="bi bi-people fs-1 text-dark"></i>
+                        <h5 class="card-title mt-3">Πελατολόγιο</h5>
+                        <p class="card-text small text-muted">Προβολή όλων των εγγεγραμμένων πελατών και των υπολοίπων τους.</p>
+                        <a asp-action="CustomerList" class="btn btn-outline-dark w-100">Προβολή Λίστας</a>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-success">
-                <div class="card-body text-center">
-                    <i class="bi bi-piggy-bank fs-1 text-success"></i>
-                    <h5 class="card-title mt-3">Νέος Λογαριασμός</h5>
-                    <p class="card-text small text-muted">Άνοιγμα τραπεζικού λογαριασμού (IBAN) σε υπάρχοντα πελάτη.</p>
-                    <a asp-action="AddAccount" class="btn btn-outline-success w-100">Δημιουργία IBAN</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm" style="border: 1px solid black;">
-                <div class="card-body text-center">
-                    <i class="bi bi-people fs-1 text-dark"></i>
-                    <h5 class="card-title mt-3">Πελατολόγιο</h5>
-                    <p class="card-text small text-muted">Προβολή όλων των εγγεγραμμένων πελατών και των υπολοίπων τους.</p>
-                    <a asp-action="CustomerList" class="btn btn-outline-dark w-100">Προβολή Λίστας</a>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>

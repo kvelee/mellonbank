@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MellonBank.Data;
 using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 [Authorize(Roles = "Staff")]
 public class StaffController : Controller
@@ -52,21 +53,27 @@ public class StaffController : Controller
         return View(model);
     }
 
-    public async Task<IActionResult> CustomerList()
+    public async Task<IActionResult> CustomerList(string searchAfm)
+{
+    var query = _userManager.Users.AsQueryable();
+
+    if (!string.IsNullOrEmpty(searchAfm))
     {
-        var allUsers = _userManager.Users.ToList();
-        var customers = new List<ApplicationUser>();
-
-        foreach (var user in allUsers)
-        {
-            if (await _userManager.IsInRoleAsync(user, "Customer"))
-            {
-                customers.Add(user);
-            }
-        }
-
-        return View(customers);
+        query = query.Where(u => u.AFM.Contains(searchAfm));
     }
+
+    var customers = new List<ApplicationUser>();
+    var allUsers = await query.ToListAsync();
+
+    foreach (var user in allUsers)
+    {
+        if (await _userManager.IsInRoleAsync(user, "Customer"))
+        {
+            customers.Add(user);
+        }
+    }
+    return View(customers);
+}
 
     // GET: Staff/AddAccount?userId=...
     public async Task<IActionResult> AddAccount(string userId)
@@ -105,6 +112,82 @@ public class StaffController : Controller
             return RedirectToAction("CustomerList");
         }
         return View(model);
+    }
+
+    // GET: Staff/EditCustomer/999999999
+    public async Task<IActionResult> EditCustomer(string afm)
+    {
+        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.AFM == afm);
+        if (user == null) return NotFound();
+
+        // Χρησιμοποιούμε το ίδιο ViewModel με την εγγραφή ή ένα νέο EditCustomerViewModel
+        return View(user); 
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditCustomer(ApplicationUser model)
+    {
+        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.AFM == model.AFM);
+        if (user == null) return NotFound();
+
+        // Ενημέρωση στοιχείων
+        user.Name = model.Name;
+        user.LastName = model.LastName;
+        user.Address = model.Address;
+        user.PhoneNumber = model.PhoneNumber; // Το ζητάει η εκφώνηση
+
+        var result = await _userManager.UpdateAsync(user);
+        if (result.Succeeded)
+        {
+            return RedirectToAction("CustomerList");
+        }
+
+        return View(user);
+    }
+
+    // POST: Staff/DeleteCustomer/999999999
+    [HttpPost]
+    public async Task<IActionResult> DeleteCustomer(string afm)
+    {
+        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.AFM == afm);
+        if (user == null) return NotFound();
+
+        // Προσοχή: Η διαγραφή χρήστη θα διαγράψει και τους λογαριασμούς του 
+        // λόγω του Foreign Key (Cascade Delete)
+        await _userManager.DeleteAsync(user);
+        return RedirectToAction("CustomerList");
+    }
+
+    // GET: Staff/EditAccount/GR123...
+    public async Task<IActionResult> EditAccount(string iban)
+    {
+        var account = await _context.BankAccounts.FindAsync(iban);
+        if (account == null) return NotFound();
+        return View(account);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditAccount(BankAccount model)
+    {
+        if (ModelState.IsValid)
+        {
+            _context.Update(model);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("CustomerList");
+        }
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> DeleteAccount(string iban)
+    {
+        var account = await _context.BankAccounts.FindAsync(iban);
+        if (account != null)
+        {
+            _context.BankAccounts.Remove(account);
+            await _context.SaveChangesAsync();
+        }
+        return RedirectToAction("CustomerList");
     }
 
     public IActionResult Index()
