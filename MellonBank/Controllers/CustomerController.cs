@@ -66,6 +66,14 @@ public class CustomerController : Controller
         {
             ModelState.AddModelError("", "Ανεπαρκές υπόλοιπο για τη συναλλαγή.");
         }
+        else if (model.Amount <= 0)
+        {
+            ModelState.AddModelError("", "Cannot transfer this ammount (zero or negative ammount error)");
+        }
+        else if (sourceAccount == destinationAccount)
+        {
+            ModelState.AddModelError("","Cannot transfer to the same account");
+        }
     
         if (ModelState.IsValid)
         {
