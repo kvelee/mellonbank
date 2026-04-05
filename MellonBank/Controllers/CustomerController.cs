@@ -11,10 +11,13 @@ public class CustomerController : Controller
     private readonly ApplicationDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public CustomerController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+    private readonly SignInManager<ApplicationUser> _signInManager;
+
+    public CustomerController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
     {
         _context = context;
         _userManager = userManager;
+        _signInManager = signInManager;
     }
 
     public async Task<IActionResult> Index()
@@ -114,4 +117,34 @@ public class CustomerController : Controller
         ViewBag.Iban = iban;
         return View(transactions);
     }
+
+    [HttpGet]
+public IActionResult ChangePassword() => View();
+
+[HttpPost]
+public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+{
+    if (!ModelState.IsValid) return View(model);
+
+    var user = await _userManager.GetUserAsync(User);
+    if (user == null) return RedirectToAction("Index", "Home");
+
+    // Η μέθοδος ChangePasswordAsync ελέγχει αν το OldPassword είναι σωστό
+    var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+
+    if (result.Succeeded)
+    {
+        // Αποσύνδεση και επανασύνδεση για να ανανεωθεί το security stamp
+        await _signInManager.RefreshSignInAsync(user);
+        TempData["SuccessMessage"] = "Ο κωδικός σας άλλαξε με επιτυχία!";
+        return RedirectToAction("Index");
+    }
+
+    foreach (var error in result.Errors)
+    {
+        ModelState.AddModelError(string.Empty, error.Description);
+    }
+
+    return View(model);
+}
 }

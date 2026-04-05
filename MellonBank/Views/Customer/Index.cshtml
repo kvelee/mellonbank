@@ -7,17 +7,19 @@
 
 <div class="container mt-4">
     <div class="row mb-4">
-        <div class="d-flex justigy-content-space-between">
-            <div class="col">
-            <h2 class="fw-bold text-dark">Καλώς ορίσατε, @ViewBag.CustomerName</h2>
-            <p class="text-muted">Δείτε την κατάσταση των λογαριασμών σας στην MellonBank.</p>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold text-dark">Καλώς ορίσατε, @ViewBag.CustomerName</h2>
+                <p class="text-muted mb-0">Διαχείριση των οικονομικών σας</p>
             </div>
-
-           <a asp-action="Transfer" 
-               class="btn btn-success rounded-pill d-flex justify-content-center align-items-center shadow-sm" style="margin: 16px 8px; height: 50px">
-               <span>Μεταφορά Χρημάτων</span>
-           </a>
-        
+            <div class="d-flex gap-2">
+                <a asp-action="ChangePassword" class="btn btn-outline-secondary rounded-pill px-3">
+                    <i class="bi bi-gear-fill"></i> Ασφάλεια
+                </a>
+                <a asp-action="Transfer" class="btn btn-success shadow-sm rounded-pill px-4">
+                    <i class="bi bi-arrow-left-right me-2"></i> Μεταφορά Χρημάτων
+                </a>
+            </div>
         </div>
         
         
