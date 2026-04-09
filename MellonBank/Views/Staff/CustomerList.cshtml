@@ -1,3 +1,4 @@
+@using Microsoft.CodeAnalysis.CSharp.Syntax
 @model IEnumerable<ApplicationUser>
 @{
     ViewData["Title"] = "Λίστα Πελατών";
@@ -21,6 +22,7 @@
                 <tr>
                     <th>ΑΦΜ</th>
                     <th>Όνομα</th>
+                    <th>Τηλέφωνο</th>
                     <th class="text-center">Ενέργειες</th>
                 </tr>
             </thead>
@@ -29,6 +31,13 @@
                     <tr>
                         <td>@customer.AFM</td>
                         <td>@customer.Name @customer.LastName</td>
+                        @if (@customer.PhoneNumber == null) {
+                            <td>-</td>
+
+                        }else {
+                            <td>@customer.PhoneNumber</td>
+                        }
+                        
                         <td class="text-center d-flex justify-content-evenly">
                             <a asp-action="EditCustomer" asp-route-afm="@customer.AFM" class="btn btn-sm btn-warning">Επεξεργασία</a>
                             <form asp-action="DeleteCustomer" asp-route-afm="@customer.AFM" method="post" style="display:inline">

@@ -17,7 +17,7 @@
                     <i class="bi bi-gear-fill"></i> Ασφάλεια
                 </a>
                 <a asp-action="Transfer" class="btn btn-success shadow-sm rounded-pill px-4">
-                    <i class="bi bi-arrow-left-right me-2"></i> Μεταφορά Χρημάτων
+                    <i class="bi bi-arrow-left-right me-2">Μεταφορά Χρημάτων</i> 
                 </a>
             </div>
         </div>
@@ -55,7 +55,7 @@
                             </div>
                             }
                         else @if (@account.AccountType=="Business") {
-                            <div class="card-header bg-primary text-white py-3 border-0" style="background-color: lightgrey !important;">
+                            <div class="card-header bg-primary text-white py-3 border-0" style="background: linear-gradient(135deg, #c0c0c0 0%, #808080 50%, #a9a9a9 100%); color: #ffffff !important;">
                             <small class="text-uppercase opacity-75" style="letter-spacing: 1px;">@account.AccountType</small>
                             <h5 class="mb-0 fw-bold">@account.BranchName</h5>
                         </div>

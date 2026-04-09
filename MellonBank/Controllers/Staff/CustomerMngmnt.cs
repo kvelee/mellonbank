@@ -29,6 +29,7 @@ public partial class StaffController : Controller {
                 Name = model.FirstName,
                 LastName = model.LastName,
                 AFM = model.AFM,
+                PhoneNumber = model.PhoneNumber,
                 Address = model.Address,
                 EmailConfirmed = true
             };

@@ -6,5 +6,6 @@ public class AddCustomerViewModel
     public required string Username { get; set; }
     public required string Password { get; set; }
     public required string AFM { get; set; }
+    public required string PhoneNumber {get;set;}
     public string? Address { get; set; }
 }
