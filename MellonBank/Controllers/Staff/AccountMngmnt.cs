@@ -20,7 +20,6 @@ public partial class StaffController : Controller
     [HttpPost]
     public async Task<IActionResult> AddAccount(AddAccountViewModel model)
     {
-        ModelState.Remove("CustomerName");
 
         if (ModelState.IsValid)
         {
@@ -33,7 +32,7 @@ public partial class StaffController : Controller
                 AFM = model.AFM
             };
 
-            _context.BankAccounts.Add(account); // Τώρα αυτό θα δουλέψει!
+            _context.BankAccounts.Add(account);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("CustomerList");

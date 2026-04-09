@@ -8,7 +8,7 @@ public class AddCustomerViewModel
     public required string Username { get; set; }
     public required string Password { get; set; }
     [Required]
-    [RegularExpression(@"^[0-9]{9}$", ErrorMessage = "Ο Αριθμός Φορολογικού Μητρώου (ΑΦΜ) πρέπει να περιέχει μόνο αριθμούς και να έχει μήκος 9 χαρακτήρες")]
+    [RegularExpression(@"^[0-9]{9}$", ErrorMessage = "Ο Αριθμός Φορολογικού Μητρώου (ΑΦΜ) πρέπει να περιέχει μόνο αριθμούς και να έχει μήκος 9git χαρακτήρες")]
     public required string AFM { get; set; }
 
     [Required]

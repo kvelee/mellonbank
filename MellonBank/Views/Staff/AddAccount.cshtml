@@ -7,14 +7,15 @@
         </div>
         <div class="card-body p-4 bg-light">
             <form asp-action="AddAccount" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div asp-validation-summary="All" class="text-danger"></div>
                 
                 <input type="hidden" asp-for="AFM" />
+                <input type="hidden" asp-for="CustomerName" />
 
                 <div class="row g-3 mb-4">
                     <div class="col-md-6">
                         <label class="form-label text-muted small uppercase">Ονοματεπώνυμο Πελάτη</label>
-                        <input class="form-control form-control-lg bg-white" value="@Model.CustomerName" readonly />
+                        <input class="form-control form-control-lg bg-white fw-bold text-secondary" value="@Model.CustomerName" readonly />
                     </div>
                     <div class="col-md-6">
                         <label class="form-label text-muted small">ΑΦΜ (Αναγνωριστικό)</label>
@@ -41,11 +42,11 @@
                                 <option value="Business">Mellon Business (Επαγγελματικός)</option>
                             </select>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <label class="form-label">Αρχική Πίστωση (€)</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-success text-white">€</span>
-                                <input asp-for="InitialBalance" type="number" step="0.01" class="form-control form-control-lg text-end" value="0.00" />
+                                <input asp-for="InitialBalance" class="form-control form-control-lg text-end" value="0" />
                             </div>
                         </div>
                     </div>
