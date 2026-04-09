@@ -39,6 +39,7 @@
                         }
                         
                         <td class="text-center d-flex justify-content-evenly">
+                            <a asp-action="DetailsCustomer" asp-route-id="@customer.Id" class="btn btn-sm"> <u> Λεπτομέρειες </u></a>
                             <a asp-action="EditCustomer" asp-route-afm="@customer.AFM" class="btn btn-sm btn-warning">Επεξεργασία</a>
                             <form asp-action="DeleteCustomer" asp-route-afm="@customer.AFM" method="post" style="display:inline">
                                 <button type="button" class="btn btn-sm btn-outline-danger" onclick="confirmDelete('@customer.AFM')">

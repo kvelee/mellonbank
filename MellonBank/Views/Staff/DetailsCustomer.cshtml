@@ -1,0 +1,60 @@
+@using System.Globalization
+@model DetailsCustomerViewModel
+@{
+    ViewData["Title"] = "Λεπτομέρειες Πελάτη";
+}
+
+<div class="container mt-4">
+    <h2>Στοιχεία Πελάτη: @Model.FullName</h2>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-info text-white">Πληροφορίες</div>
+                <div class="card-body">
+                    <p><strong>ΑΦΜ:</strong> @Model.AFM</p>
+                    <p><strong>Email:</strong> @Model.Email</p>
+                    <p><strong>Τηλέφωνο:</strong> @Model.PhoneNumber</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <h3>Τραπεζικοί Λογαριασμοί</h3>
+            @if (!Model.Accounts.Any()) {
+                <div class="alert alert-warning">Δεν βρέθηκαν συνδεδεμένοι λογαριασμοί.</div>
+            } else {
+                <div class="table-responsive">
+                    <table class="table table-hover border">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Αριθμός Λογαριασμού</th>
+                                <th>Τύπος</th>
+                                <th>Υποκατάστημα</th>
+                                <th>Υπόλοιπο (€)</th>
+                                <th>Υπόλοιπο ($)* </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var acc in Model.Accounts) {
+                                <tr>
+                                    <td>@acc.IBAN</td>
+                                    <td>@acc.AccountType</td>
+                                    <td>@acc.Branch</td>
+                                    <td class="fw-bold text-success">@acc.Balance.ToString("C2",new CultureInfo("gr-GR"))</td>
+                                    <td class="text-primary">@((acc.Balance * Model.UsdRate).ToString("N2")) $</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-muted small">* Η μετατροπή σε δολάρια βασίζεται σε τρέχουσα ισοτιμία από εξωτερική υπηρεσία.</p>
+            }
+        </div>
+    </div>
+    
+    <div class="mt-3">
+        <a asp-action="CustomerList" class="btn btn-secondary">Επιστροφή στη Λίστα</a>
+    </div>
+</div>
