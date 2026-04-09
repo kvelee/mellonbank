@@ -20,34 +20,35 @@ public partial class StaffController : Controller {
     [HttpPost]
     public async Task<IActionResult> AddCustomer(AddCustomerViewModel model)
     {
-        if (ModelState.IsValid)
+        if(!ModelState.IsValid)
+            return View(model);
+
+        var user = new ApplicationUser
         {
-            var user = new ApplicationUser
-            {
-                UserName = model.Username,
-                Email = model.Email,
-                Name = model.FirstName,
-                LastName = model.LastName,
-                AFM = model.AFM,
-                PhoneNumber = model.PhoneNumber,
-                Address = model.Address,
-                EmailConfirmed = true
-            };
+            UserName = model.Username,
+            Email = model.Email,
+            Name = model.FirstName,
+            LastName = model.LastName,
+            AFM = model.AFM,
+            PhoneNumber = model.PhoneNumber,
+            Address = model.Address,
+            EmailConfirmed = true
+        };
 
-            var result = await _userManager.CreateAsync(user, model.Password);
+        var result = await _userManager.CreateAsync(user, model.Password);
 
-            if (result.Succeeded)
-            {
-                
-                await _userManager.AddToRoleAsync(user, "Customer");
-                return RedirectToAction("Index"); 
-            }
-
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError("", error.Description);
-            }
+        if (result.Succeeded)
+        {
+            
+            await _userManager.AddToRoleAsync(user, "Customer");
+            return RedirectToAction("Index"); 
         }
+
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError("", error.Description);
+        }
+
         return View(model);
     }
 
@@ -71,7 +72,7 @@ public partial class StaffController : Controller {
         user.Name = model.Name;
         user.LastName = model.LastName;
         user.Address = model.Address;
-        user.PhoneNumber = model.PhoneNumber; // Το ζητάει η εκφώνηση
+        user.PhoneNumber = model.PhoneNumber;
 
         var result = await _userManager.UpdateAsync(user);
         if (result.Succeeded)

@@ -49,7 +49,6 @@ namespace MellonBank.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -59,7 +58,6 @@ namespace MellonBank.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
@@ -112,7 +110,6 @@ namespace MellonBank.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AccountType")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ApplicationUserId")
@@ -123,7 +120,6 @@ namespace MellonBank.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("BranchName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IBAN");
