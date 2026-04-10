@@ -23,6 +23,9 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
   .AddDefaultTokenProviders()
   .AddDefaultUI();
 
+  builder.Services.AddHttpClient();
+  builder.Services.AddScoped<ICurrencyService, CurrencyService>();
+
   builder.Services.AddRazorPages();
 
 var app = builder.Build();

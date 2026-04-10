@@ -17,15 +17,11 @@
                     <i class="bi bi-gear-fill"></i> Ασφάλεια
                 </a>
                 <a asp-action="Transfer" class="btn btn-success shadow-sm rounded-pill px-4">
-                    <i class="bi bi-arrow-left-right me-2">Μεταφορά Χρημάτων</i> 
+                    <i class="bi bi-arrow-left-right me-2"> Μεταφορά Χρημάτων</i>
                 </a>
             </div>
         </div>
-        
-        
     </div>
-
-    
 
     @if (!Model.Any())
     {
@@ -41,48 +37,74 @@
             {
                 <div class="col-md-6 col-lg-4">
                     <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
-                        @if (@account.AccountType=="Savings") {
+
+                        @if (account.AccountType == "Savings")
+                        {
                             <div class="card-header bg-primary text-white py-3 border-0">
-                            <small class="text-uppercase opacity-75" style="letter-spacing: 1px;">@account.AccountType</small>
-                            <h5 class="mb-0 fw-bold">@account.BranchName</h5>
+                                <small class="text-uppercase opacity-75">@account.AccountType</small>
+                                <h5 class="mb-0 fw-bold">@account.BranchName</h5>
                             </div>
                         }
-                        else { 
-                            @if (@account.AccountType=="Current") {
-                            <div class="card-header bg-primary text-white py-3 border-0" style="background-color: rgb(255, 181, 45) !important;">
-                            <small class="text-uppercase opacity-75" style="letter-spacing: 1px;">@account.AccountType</small>
-                            <h5 class="mb-0 fw-bold">@account.BranchName</h5>
+                        else if (account.AccountType == "Current")
+                        {
+                            <div class="card-header text-white py-3 border-0" style="background-color: rgb(255, 181, 45);">
+                                <small class="text-uppercase opacity-75">@account.AccountType</small>
+                                <h5 class="mb-0 fw-bold">@account.BranchName</h5>
                             </div>
-                            }
-                        else @if (@account.AccountType=="Business") {
-                            <div class="card-header bg-primary text-white py-3 border-0" style="background: linear-gradient(135deg, #c0c0c0 0%, #808080 50%, #a9a9a9 100%); color: #ffffff !important;">
-                            <small class="text-uppercase opacity-75" style="letter-spacing: 1px;">@account.AccountType</small>
-                            <h5 class="mb-0 fw-bold">@account.BranchName</h5>
-                        </div>
                         }
+                        else if (account.AccountType == "Business")
+                        {
+                            <div class="card-header text-white py-3 border-0" style="background: linear-gradient(135deg, #c0c0c0, #808080);">
+                                <small class="text-uppercase opacity-75">@account.AccountType</small>
+                                <h5 class="mb-0 fw-bold">@account.BranchName</h5>
+                            </div>
                         }
-                        
-                        
+
                         <div class="card-body p-4">
                             <p class="text-muted small mb-1">IBAN</p>
-                            <p class="font-monospace fw-bold text-primary mb-4" style="font-size: 1.1rem;">@account.IBAN</p>
-                            
+                            <p class="font-monospace fw-bold text-primary mb-4">@account.IBAN</p>
+
                             <hr class="my-3 opacity-10">
-                            
+
                             <div class="d-flex justify-content-between align-items-end">
                                 <div>
-                                    <p class="text-muted small mb-0">Διαθέσιμο Υπόλοιπο</p>
-                                    <h3 class="mb-0 fw-bold">@account.Balance.ToString("C2", new CultureInfo("gr-GR"))</h3>
+                                    <p class="text-muted small mb-0">
+                                        Διαθέσιμο Υπόλοιπο
+                                        <small class="text-muted rate-info d-none">: <u>1 EUR = @ViewBag.UsdRate USD</u></small>
+                                    </p>
+                                    <!-- Rate -->
+                                    
+
+                                    <!-- EUR -->
+                                    <h3 class="mb-0 fw-bold balance-eur">
+                                        @account.Balance.ToString("C2", new CultureInfo("el-GR"))
+                                    </h3>
+
+                                    <!-- USD -->
+                                    <h3 class="mb-0 fw-bold balance-usd d-none">
+                                        @((account.Balance * ViewBag.UsdRate).ToString("C2", new CultureInfo("en-US")))
+                                    </h3>
+
+                                    
                                 </div>
+
                                 <i class="bi bi-wallet2 fs-1 text-light opacity-50"></i>
                             </div>
                         </div>
-                        <div class="card-footer bg-white border-0 p-3 new-card-footer">
-                            <a asp-action="History" asp-route-iban="@account.IBAN"
-                                class="btn btn-outline-primary btn-sm w-100 rounded-pill">
-                                Προβολή Κινήσεων</a>
+
+                        <div class="card-footer bg-white border-0 p-3">
+                            <div class="d-flex gap-2">
+                                <a asp-action="History" asp-route-iban="@account.IBAN"
+                                   class="btn btn-outline-primary btn-sm w-100 rounded-pill">
+                                    Προβολή Κινήσεων
+                                </a>
+
+                                <button class="btn btn-outline-secondary btn-sm rounded-pill toggle-currency">
+                                    €
+                                </button>
+                            </div>
                         </div>
-                            
+
                     </div>
                 </div>
             }
@@ -96,3 +118,28 @@
     .bg-primary { background-color: #004a99 !important; }
     .text-primary { color: #004a99 !important; }
 </style>
+
+<script>
+    document.querySelectorAll('.toggle-currency').forEach(btn => {
+        btn.addEventListener('click', function () {
+
+            const card = this.closest('.card');
+
+            const eur = card.querySelector('.balance-eur');
+            const usd = card.querySelector('.balance-usd');
+            const rate = card.querySelector('.rate-info');
+
+            if (usd.classList.contains('d-none')) {
+                eur.classList.add('d-none');
+                usd.classList.remove('d-none');
+                rate.classList.remove('d-none');
+                this.textContent = '$';
+            } else {
+                eur.classList.remove('d-none');
+                usd.classList.add('d-none');
+                rate.classList.add('d-none');
+                this.textContent = '€';
+            }
+        });
+    });
+</script>

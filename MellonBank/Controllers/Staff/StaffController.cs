@@ -22,11 +22,15 @@ public partial class StaffController : Controller
 
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly ApplicationDbContext _context;
+    private readonly HttpClient _httpClient;
 
-    public StaffController(UserManager<ApplicationUser> usermanager, ApplicationDbContext context)
+    public StaffController(UserManager<ApplicationUser> usermanager
+                          ,ApplicationDbContext context
+                          ,HttpClient httpClient)
     {
         _userManager = usermanager;
         _context = context;
+        _httpClient = httpClient;   
     }
 
     /*
@@ -54,39 +58,6 @@ public partial class StaffController : Controller
             }
         }
         return View(customers);
-    }
-
-        public async Task<IActionResult> DetailsCustomer(string id)
-    {
-        if (id == null) return NotFound();
-
-        var customer = await _context.Users
-            .FirstOrDefaultAsync(u => u.Id == id);
-
-        if (customer == null) return NotFound();
-
-        var accounts = await _context.BankAccounts
-            .ToListAsync();
-
-        decimal exchangeRate = 1.00M;
-
-        var viewModel = new DetailsCustomerViewModel
-        {
-            FullName = $"{customer.Name} {customer.LastName}", 
-            AFM = customer.AFM, 
-            Email = customer.Email, 
-            PhoneNumber = customer.PhoneNumber, 
-            UsdRate = exchangeRate,
-            Accounts = accounts.Select(a => new CustomerAccountInfo
-            {
-                IBAN = a.IBAN, 
-                Balance = a.Balance, 
-                Branch = a.BranchName,
-                AccountType = a.AccountType
-            }).ToList()
-        };
-
-        return View(viewModel);
     }
 
 

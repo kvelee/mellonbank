@@ -10,29 +10,16 @@ public class CustomerController : Controller
 {
     private readonly ApplicationDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
-
+    private readonly ICurrencyService _currencyService;
     private readonly SignInManager<ApplicationUser> _signInManager;
 
-    public CustomerController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+    public CustomerController(ApplicationDbContext context, UserManager<ApplicationUser> userManager,
+                              SignInManager<ApplicationUser> signInManager, ICurrencyService currencyService)
     {
         _context = context;
         _userManager = userManager;
         _signInManager = signInManager;
-    }
-
-    public async Task<IActionResult> Index()
-    {
-        // 1. Βρίσκουμε τον τρέχοντα συνδεδεμένο χρήστη
-        var user = await _userManager.GetUserAsync(User);
-        if (user == null) return Challenge();
-
-        // 2. Φέρνουμε όλους τους λογαριασμούς που έχουν το ΑΦΜ του χρήστη
-        var myAccounts = await _context.BankAccounts
-            .Where(a => a.AFM == user.AFM)
-            .ToListAsync();
-
-        ViewBag.CustomerName = $"{user.Name} {user.LastName}";
-        return View(myAccounts);
+        _currencyService = currencyService;
     }
 
     // ======== Tranfer Controllers ========
@@ -156,4 +143,20 @@ public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
 
     return View(model);
 }
+
+
+    public async Task<IActionResult> Index()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null) return Challenge();
+
+        var myAccounts = await _context.BankAccounts
+            .Where(a => a.AFM == user.AFM)
+            .ToListAsync();
+
+        ViewBag.UsdRate = await _currencyService.GetUsdRateAsync();
+        ViewBag.CustomerName = $"{user.Name} {user.LastName}";
+        
+        return View(myAccounts);
+    }
 }
