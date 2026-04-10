@@ -22,15 +22,15 @@ public partial class StaffController : Controller
 
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly ApplicationDbContext _context;
-    private readonly HttpClient _httpClient;
+    private readonly ICurrencyService _currencyService;
 
     public StaffController(UserManager<ApplicationUser> usermanager
                           ,ApplicationDbContext context
-                          ,HttpClient httpClient)
+                          ,ICurrencyService currencyService)
     {
         _userManager = usermanager;
         _context = context;
-        _httpClient = httpClient;   
+        _currencyService = currencyService;
     }
 
     /*
@@ -58,6 +58,38 @@ public partial class StaffController : Controller
             }
         }
         return View(customers);
+    }
+
+    public async Task<IActionResult> DetailsCustomer(string id)
+    {
+        if (string.IsNullOrEmpty(id)) return NotFound();
+
+        var customer = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        if (customer == null) return NotFound();
+
+        var accounts = await _context.BankAccounts
+            .Where(a => a.AFM == customer.AFM)
+            .ToListAsync();
+
+        decimal exchangeRate = await _currencyService.GetUsdRateAsync();
+
+        var viewModel = new DetailsCustomerViewModel
+        {
+            FullName = $"{customer.Name} {customer.LastName}", // [cite: 38]
+            AFM = customer.AFM, // [cite: 52]
+            Email = customer.Email,
+            PhoneNumber = customer.PhoneNumber,
+            UsdRate = exchangeRate, // Η τιμή από το API
+            Accounts = accounts.Select(a => new CustomerAccountInfo
+            {
+                IBAN = a.IBAN, // [cite: 41]
+                Balance = a.Balance, // [cite: 40]
+                Branch = a.BranchName, // [cite: 41]
+                AccountType = a.AccountType // [cite: 41]
+            }).ToList()
+        };
+
+        return View(viewModel);
     }
 
 
