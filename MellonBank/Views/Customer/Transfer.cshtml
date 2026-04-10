@@ -31,7 +31,7 @@
 
                     <div class="mb-3">
                         <label class="form-label">Ποσό Μεταφοράς (€)</label>
-                        <input asp-for="Amount" step="0.01" class="form-control form-control-lg" required />
+                        <input asp-for="Amount" class="form-control form-control-lg" required />
                     </div>
 
                     <div class="mb-4">
@@ -40,7 +40,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary w-100 btn-lg rounded-pill">Επιβεβαίωση Μεταφοράς</button>
-                    <a asp-action="Index" class="btn btn-link w-100 mt-2 text-decoration-none">Ακύρωση</a>
+                    <a asp-action="Index" class="btn btn-link w-100 mt-2 rounded-pill text-decoration-none">Ακύρωση</a>
                 </form>
             </div>
         </div>
