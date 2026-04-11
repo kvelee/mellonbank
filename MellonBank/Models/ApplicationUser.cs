@@ -12,14 +12,12 @@ public class ApplicationUser : IdentityUser
     // - Email
     // - PasswordHash
 
-
     public string? Name {get;set;}        
     public string? LastName {get;set;}
     public string? Address {get;set;}
-    [Key]
     public string? AFM {get;set;}
 
-    public ICollection<BankAccount> BankAccounts {get;set;} = new List<BankAccount>();
+    public ICollection<BankAccount>? BankAccounts {get;set;} // = new List<BankAccount>();
 
 
 }

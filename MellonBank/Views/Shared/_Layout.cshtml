@@ -34,12 +34,24 @@
                             </li>
                         }                    
                     </ul>
-                    
-                    <a asp-controller="Home" asp-action="Logout" 
-                       class="btn fw-bold" 
-                       style="background-color: red; color: white; border: none;">
-                        Αποσύνδεση
-                    </a>
+
+                    <div class="justify-content-between d-flex">
+
+                        @if (User.IsInRole("Staff")){
+                            <a asp-controller="Staff" asp-action="CreateStaff" class="btn fw-bold" style="color: white;
+                            background-color: skyblue; margin-right: 8px;">
+                                + Create Staff
+                            </a>
+                        }
+
+                        @if (User.IsInRole("Staff") || User.IsInRole("Customer")) {
+                            <a asp-controller="Home" asp-action="Logout" 
+                               class="btn fw-bold" 
+                               style="background-color: red; color: white; border: none;">
+                                Αποσύνδεση
+                            </a>
+                        }
+                    </div>
 
                 </div>
             </div>

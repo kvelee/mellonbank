@@ -28,8 +28,7 @@ namespace MellonBank.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AFM")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -303,7 +302,6 @@ namespace MellonBank.Migrations
                     b.HasOne("ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("AFM")
-                        .HasPrincipalKey("AFM")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

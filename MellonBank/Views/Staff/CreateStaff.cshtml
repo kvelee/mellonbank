@@ -1,0 +1,64 @@
+@model AddStaffViewModel
+@{
+    ViewData["Title"] = "Εγγραφή Νέου Προσωπικού";
+}
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Στοιχεία Νέου Προσωπικού</h4>
+    </div>
+    <div class="card-body p-4">
+        <form asp-action="CreateStaff" method="post">
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Όνομα</label>
+                    <input asp-for="FirstName" class="form-control" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Επώνυμο</label>
+                    <input asp-for="LastName" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Email</label>
+                    <input asp-for="Email" class="form-control" type="email" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Address</label>
+                    <input asp-for="Address" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="row">
+                
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Phone Number</label>
+                    <input asp-for="PhoneNumber" class="form-control" required />
+                </div>
+
+            </div>
+
+            <hr />
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Username</label>
+                    <input asp-for="Username" class="form-control" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Προσωρινός Κωδικός</label>
+                    <input asp-for="Password" class="form-control" type="password" required />
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success px-5">Δημιουργία Λογαριασμού</button>
+                <a asp-action="Index" class="btn btn-secondary">Ακύρωση</a>
+            </div>
+        </form>
+    </div>
+</div>

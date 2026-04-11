@@ -26,7 +26,6 @@ public static class DbSeeder
                 Email=adminEmail,
                 Name="System",
                 LastName = "Administrator",
-                AFM="000000000",
                 EmailConfirmed = true,
                 Address = ""
             };

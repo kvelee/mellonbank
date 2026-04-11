@@ -4,6 +4,7 @@ using MellonBank.Data;
 using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 /*
 
@@ -36,7 +37,6 @@ public partial class StaffController : Controller
     /*
         We only keep the CustomerList method, since this is the main method being called.
         It's the first thing Staff users see, as they land to their page.
-        
     */
     public async Task<IActionResult> CustomerList(string searchAfm)
     {
@@ -75,22 +75,63 @@ public partial class StaffController : Controller
 
         var viewModel = new DetailsCustomerViewModel
         {
-            FullName = $"{customer.Name} {customer.LastName}", // [cite: 38]
-            AFM = customer.AFM, // [cite: 52]
+            FullName = $"{customer.Name} {customer.LastName}",
+            AFM = customer.AFM,
             Email = customer.Email,
             PhoneNumber = customer.PhoneNumber,
             UsdRate = exchangeRate, // Η τιμή από το API
             Accounts = accounts.Select(a => new CustomerAccountInfo
             {
-                IBAN = a.IBAN, // [cite: 41]
-                Balance = a.Balance, // [cite: 40]
-                Branch = a.BranchName, // [cite: 41]
-                AccountType = a.AccountType // [cite: 41]
+                IBAN = a.IBAN,
+                Balance = a.Balance,
+                Branch = a.BranchName,
+                AccountType = a.AccountType
             }).ToList()
         };
 
         return View(viewModel);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> CreateStaff()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateStaff(AddStaffViewModel model)
+    {
+        if(!ModelState.IsValid)
+            return View(model);
+
+        var staff = new ApplicationUser
+        {
+            Name = model.FirstName,
+            LastName = model.LastName,
+            Address = model.Address,
+            UserName = model.Username,
+            Email = model.Email,
+            PhoneNumber = model.PhoneNumber,
+            EmailConfirmed = true
+        };
+
+        var result = await _userManager.CreateAsync(staff, model.Password);
+
+        if (result.Succeeded)
+        {
+            await _userManager.AddToRoleAsync(staff,"Staff");
+            return RedirectToAction("Index");
+        }
+
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError("", error.Description);
+        }
+
+        return View();
+        
+    }
+
 
 
     public IActionResult Index()
