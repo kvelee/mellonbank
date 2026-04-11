@@ -22,7 +22,7 @@ namespace MellonBank.Data
             builder.Entity<BankAccount>()
                 .HasOne(a => a.User)
                 .WithMany() 
-                .HasForeignKey(a => a.AFM);
+                .HasForeignKey(a => a.UserId);
         }
 
     }

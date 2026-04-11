@@ -106,7 +106,7 @@ namespace MellonBank.Migrations
 
                     b.Property<string>("AFM")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AccountType")
                         .HasColumnType("nvarchar(max)");
@@ -121,11 +121,15 @@ namespace MellonBank.Migrations
                     b.Property<string>("BranchName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("IBAN");
 
-                    b.HasIndex("AFM");
-
                     b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("BankAccounts");
                 });
@@ -299,15 +303,15 @@ namespace MellonBank.Migrations
 
             modelBuilder.Entity("BankAccount", b =>
                 {
-                    b.HasOne("ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("AFM")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ApplicationUser", null)
                         .WithMany("BankAccounts")
                         .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 public partial class StaffController : Controller
 {
@@ -19,7 +20,14 @@ public partial class StaffController : Controller
 
     [HttpPost]
     public async Task<IActionResult> AddAccount(AddAccountViewModel model)
-    {
+    {   
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.AFM == model.AFM);
+
+        if (user == null)
+        {
+            ModelState.AddModelError("AFM", "Δεν βρέθηκε χρήστης με το συγκεκριμένο ΑΦΜ.");
+            return View(model);
+        }
 
         if (ModelState.IsValid)
         {
@@ -29,7 +37,8 @@ public partial class StaffController : Controller
                 Balance = model.InitialBalance,
                 BranchName = model.BranchName,
                 AccountType = model.AccountType,
-                AFM = model.AFM
+                AFM = model.AFM,
+                UserId = user.Id
             };
 
             _context.BankAccounts.Add(account);
