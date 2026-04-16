@@ -47,7 +47,9 @@ localhost:8080
 - Εκτελούνται αυτόματα τα **Database Migrations**
 - Τρέχει ο **DbSeeder**
 - Δημιουργούνται roles και αρχικά δεδομένα
-
+- Αρχικός λογαριασμός:
+    Username: admin
+    Password: password
 ---
 
 ## 📋 Troubleshooting
