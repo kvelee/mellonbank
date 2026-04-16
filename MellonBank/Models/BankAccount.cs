@@ -12,7 +12,8 @@ public class BankAccount {
 
     public required string AFM { get; set; }
 
-    public required string UserId {get;set;}
     [ForeignKey("UserId")]
+    public required string UserId {get;set;}
+
     public virtual ApplicationUser? User { get; set; }
 }

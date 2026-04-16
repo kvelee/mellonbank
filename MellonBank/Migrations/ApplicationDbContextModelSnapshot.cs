@@ -111,9 +111,6 @@ namespace MellonBank.Migrations
                     b.Property<string>("AccountType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<decimal>("Balance")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
@@ -126,8 +123,6 @@ namespace MellonBank.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("IBAN");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("UserId");
 
@@ -303,12 +298,8 @@ namespace MellonBank.Migrations
 
             modelBuilder.Entity("BankAccount", b =>
                 {
-                    b.HasOne("ApplicationUser", null)
-                        .WithMany("BankAccounts")
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("BankAccounts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

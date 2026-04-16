@@ -21,7 +21,7 @@ namespace MellonBank.Data
 
             builder.Entity<BankAccount>()
                 .HasOne(a => a.User)
-                .WithMany() 
+                .WithMany(u=> u.BankAccounts) 
                 .HasForeignKey(a => a.UserId);
         }
 
