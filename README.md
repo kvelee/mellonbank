@@ -11,10 +11,11 @@
 ### 1. Κλωνοποίηση Repository
 
 
-git clone https://github.com/your-username/mellonbank.git
+git clone https://github.com/kvelee/mellonbank.git
+
 cd mellonbank
 
-### 2. (Προαιρετικό) Pull SQL Server Image
+### 2. (Προαιρετικό, μόνο εάν δεν το έχετε) Pull SQL Server Image
 
 
 docker pull mcr.microsoft.com/mssql/server:2022-latest
@@ -46,7 +47,7 @@ docker compose up --build
 
 Αν αποτύχει η πρώτη εκκίνηση:
 
-- Βεβαιώσου ότι το container `db` έχει ξεκινήσει πλήρως  
+- Βεβαιωθείτε ότι το container `db` έχει ξεκινήσει πλήρως  
 - Αν χρειάζεται:
 
 
@@ -59,7 +60,7 @@ docker compose restart
 Για τις ισοτιμίες USD:
 
 - Χρησιμοποιείται το Fixer.io API  
-- Ρύθμισε το API Key στο:
+- (Προεραιτικό) Ρύθμιστε το API Key στο:
 
 
 appsettings.json
