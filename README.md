@@ -48,8 +48,9 @@ docker compose up --build
 - Βεβαιωθείτε ότι το container `db` έχει ξεκινήσει πλήρως  
 - Αν χρειάζεται:
 
-
+```
 docker compose restart
+```
 
 ---
 
