@@ -39,15 +39,6 @@ docker compose up --build
 
 ---
 
-## 🛠 Τεχνολογικό Stack
-
-- **Backend:** ASP.NET Core 8 MVC (C#)  
-- **Database:** Microsoft SQL Server  
-- **ORM:** Entity Framework Core (Code-First)  
-- **Authentication:** ASP.NET Core Identity  
-- **Frontend:** Razor Views, Bootstrap, JavaScript, jQuery  
-- **External API:** Fixer.io (USD exchange rates)
-
 ## 📋 Troubleshooting
 
 ### ❗ Database Connection Issue
