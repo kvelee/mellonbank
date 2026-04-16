@@ -48,8 +48,10 @@ localhost:8080
 - Τρέχει ο **DbSeeder**
 - Δημιουργούνται roles και αρχικά δεδομένα
 - Αρχικός λογαριασμός:
+```
     Username: admin
     Password: password
+```
 ---
 
 ## 📋 Troubleshooting
