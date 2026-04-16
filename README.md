@@ -37,6 +37,11 @@ docker compose up --build db
 ```
 docker compose up --build web
 ```
+### 4. Σύνδεση
+Συνδέεστε στην εφαρμογή από το
+```
+localhost:8080
+```
 
 📌 Με την εκκίνηση:
 - Εκτελούνται αυτόματα τα **Database Migrations**
