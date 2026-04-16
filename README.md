@@ -30,7 +30,7 @@ docker pull mcr.microsoft.com/mssql/server:2022-latest
 
 1. 
 ```
-docker compose up --build db
+docker compose up --build db -d
 ```
 
 2. 
