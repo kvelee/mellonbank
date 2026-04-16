@@ -16,8 +16,9 @@ public class CurrencyService : ICurrencyService
 
     public async Task<decimal> GetUsdRateAsync()
     {   
-        /* Temporary line, in case we overdo it with the API calls*/
-        return 1.7002M;
+        /* Temporary line, in case we overdo it with the API calls. It may be commented on the last commit*/
+        //return 1.7002M;
+        
         string apiKey = _configuration["FixerApi:ApiKey"];
         string url = $"http://data.fixer.io/api/latest?access_key={apiKey}&symbols=USD";
 
@@ -38,7 +39,8 @@ public class CurrencyService : ICurrencyService
             }
         }
         catch
-        {
+        {   
+            Console.WriteLine("[FIXERIO-ERROR] Could not fetch form the API");
             return 1.1M;
         }
         return 1.1M;

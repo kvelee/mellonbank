@@ -2,6 +2,7 @@ using MellonBank.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using NuGet.Protocol;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,7 +34,11 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<ApplicationDbContext>();
+
+    await context.Database.MigrateAsync();
     await DbSeeder.SeedRolesAndAdminAsync(services);
+
 }
 
 // Configure the HTTP request pipeline.
