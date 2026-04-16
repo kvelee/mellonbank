@@ -28,8 +28,14 @@ docker pull mcr.microsoft.com/mssql/server:2022-latest
 
 ### 3. Εκτέλεση Εφαρμογής
 
+1. 
 ```
-docker compose up --build
+docker compose up --build db
+```
+
+2. 
+```
+docker compose up --build web
 ```
 
 📌 Με την εκκίνηση:
@@ -46,11 +52,7 @@ docker compose up --build
 Αν αποτύχει η πρώτη εκκίνηση:
 
 - Βεβαιωθείτε ότι το container `db` έχει ξεκινήσει πλήρως  
-- Αν χρειάζεται:
-
-```
-docker compose restart
-```
+- Αν χρειάζεται ξανακάντε build
 
 ---
 
